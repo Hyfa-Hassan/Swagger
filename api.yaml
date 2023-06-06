@@ -1,0 +1,141 @@
+swagger: "2.0"
+info: 
+  title: Learning Swagger
+  description: This is my company documentation
+  version: 1.0
+  contact:
+    email: hyfahassan@gmail.com
+  liscence:
+    name: Apache 2.0
+    url: "http://apache.org/"
+  servers:
+    -url: "http://localhost:4000/"
+    description: This is my local server
+    -url: "http://company.com/"
+    description: This is my company server
+
+schemes: [http,https]
+
+paths: 
+#returns a string
+  /string:
+    get:
+      summary: returns a string
+      description: It is just a string.
+      responses:
+        200:
+          description: Success
+          schema:
+            type: string
+            example: "A fake string"
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#returns a object
+  /user:
+    get:
+      summary: returns a object
+      description: It is just a single object.
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#returning array of users
+  /users:
+    get:
+      summary: returns an array of users
+      description: returns a simple array of users ...
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items: 
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+
+#send data dynamically or sending/ reading data through path
+  /users/{userId}:
+    get:
+      summary: returns an array of users
+      description: returns a simple array of users ...
+      parameters: 
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: success
+
+#posting data
+  /create:
+    post:
+      summary: Posting data
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: user
+        schema:
+          $ref: "#/components/schemas/User"
+      responses:
+        200:
+          description: OK
+
+#Query
+  /usersQuery:
+    get:
+      parameters:
+      - in: query
+        name: id
+        type: integer
+      responses:
+        200:
+          description: OK
+
+#FileUpload
+  /upload:
+    post:
+      consumes:
+        - multipart/form-data
+      parameters:
+      - in: formData
+        name: file
+        type: file
+        required: true
+        description: File Upload
+      responses:
+        200:
+          description: OK
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
